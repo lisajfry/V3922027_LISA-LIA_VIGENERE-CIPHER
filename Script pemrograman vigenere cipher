@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <script>
+        function vigenereCipher(text, key, decrypt = false) {//memanggil fungtion untuk melakukan enkripsi atau deskripsi vigenere cipher
+            text = text.toUpperCase();//mengonversi semua karakter dalam teks menjadi huruf kapital
+            key = key.toUpperCase();
+            const keyLength = key.length;
+            let output = '';
+
+            for (let i = 0, j = 0; i < text.length; ++i) {
+                if (/[A-Z]/.test(text[i])) {// Memeriksa apakah karakter adalah huruf kapital(A-Z)
+                    const offset = 'A'.charCodeAt(0);// Kode ASCII untuk huruf 'A'
+                    if (decrypt) {// Jika dalam mode dekripsi
+                        output += String.fromCharCode(((26 + text.charCodeAt(i) - key.charCodeAt(j % keyLength)) % 26) + offset);// Melakukan dekripsi menggunakan rumus Vigenere cipher
+                    } else {// Jika dalam mode enkripsi
+                        output += String.fromCharCode(((text.charCodeAt(i) + key.charCodeAt(j % keyLength) - (2 * offset)) % 26) + offset);// Melakukan enkripsi menggunakan rumus Vigenere cipher
+                    }
+                    ++j;// Pindah ke karakter kunci berikutnya
+                } else {// Jika karakter bukan huruf, misal spasi atau karakter lain
+                    output += text[i];// Tambahkan karakter asli ke teks output tanpa melakukan enkripsi atau dekripsi
+                }
+            }
+
+            return output;
+        }
+
+        const encryptedText = vigenereCipher('LISA LIA', 'NGANTUK');//mengenkripsi teks 'LISA LIA' dengan kunci 'NGANTUK' dan menyimpan hasilnya dalam variabel encryptedText
+        const decryptedText = vigenereCipher('YOSN ECK', 'NGANTUK', true);//mendekripsi teks 'YOSN ECK' dengan kunci yang sama dan menyimpan hasilnya dalam variabel decryptedText
+
+        document.write("<h2>teks yang dienkripsi</h2>\n");
+        document.write("<p>LISA LIA</p>\n");
+        document.write("<h2>Kunci</h2>\n");
+        document.write("<p>NGANTUK</p>\n");
+        document.write("<h2>ciphertext</h2>\n");
+        document.write("<p>" + encryptedText + "</p>\n");
+        document.write("<h2>plaintext</h2>\n");
+        document.write("<p>" + decryptedText + "</p>\n");
+    </script>
+</body>
+</html>
